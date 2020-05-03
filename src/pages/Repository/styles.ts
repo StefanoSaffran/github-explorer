@@ -8,11 +8,11 @@ export const Header = styled.header`
   a {
     display: flex;
     align-items: center;
-    color: #a8a8b3;
+    color: ${({ theme }) => theme.colors.text};
     transition: color 0.2s;
 
     &:hover {
-      color: #666;
+      color: ${({ theme }) => theme.colors.title};
     }
     svg {
       margin-right: 4px;
@@ -41,12 +41,12 @@ export const RepositoryInfo = styled.section`
 
       strong {
         font-size: 30px;
-        color: #3d3d4d;
+        color: ${({ theme }) => theme.colors.textStrong};
       }
 
       p {
         font-size: 16px;
-        color: #737380;
+        color: ${({ theme }) => theme.colors.text};
         margin-top: 4px;
       }
     }
@@ -66,13 +66,13 @@ export const RepositoryInfo = styled.section`
       strong {
         display: block;
         font-size: 30px;
-        color: #3d3d4d;
+        color: ${({ theme }) => theme.colors.textStrong};
       }
 
       span {
         display: block;
         margin-top: 4px;
-        color: #6c6c80;
+        color: ${({ theme }) => theme.colors.text};
       }
     }
   }
@@ -131,7 +131,7 @@ export const Issues = styled.div`
   margin-top: 80px;
 
   a {
-    background: #fff;
+    background: ${({ theme }) => theme.colors.cardBackground};
     border-radius: 5px;
     width: 100%;
     padding: 24px;
@@ -156,12 +156,12 @@ export const Issues = styled.div`
 
       strong {
         font-size: 20px;
-        color: #3d3d4d;
+        color: ${({ theme }) => theme.colors.textStrong};
       }
 
       p {
         font-size: 18px;
-        color: #a8a8b3;
+        color: ${({ theme }) => theme.colors.text};
         margin-top: 4px;
       }
     }

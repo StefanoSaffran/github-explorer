@@ -1,8 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 import githubBackground from '../assets/github-background.svg';
+import githubBackgroundDark from '../assets/github-background-dark.svg';
 
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import 'react-toggle/style.css';
+
+const logo = {
+  light: githubBackground,
+  dark: githubBackgroundDark,
+};
 
 export default createGlobalStyle`
   * {
@@ -21,9 +27,17 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #f0f0f5 url(${githubBackground}) no-repeat 70% top;
+    background: ${({ theme }) =>
+      `${theme.colors.background} url(${logo.light}) no-repeat 70% top`};
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
+
+    ${({ theme }) =>
+      theme.title === 'dark' &&
+      css`
+        background: ${theme.colors.background} url(${logo.dark}) no-repeat 70%
+          top;
+      `}
   }
 
   body, input, button, input::placeholder, textarea::placeholder {

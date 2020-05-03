@@ -1,13 +1,17 @@
-import React, { useState, useEffect, FormEvent } from 'react';
+import React, { useState, useEffect, useContext, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import Toggle from 'react-toggle';
+import { ThemeContext } from 'styled-components';
+
 import api from '../../services/api';
+import Loading from '../../components/Loading';
+import { useTheme } from '../../hooks/theme';
 
 import logo from '../../assets/logo.svg';
 
-import Loading from '../../components/Loading';
-
-import { Title, Form, Repositories, Error } from './styles';
+import { Title, Form, Repositories, Header, Error } from './styles';
 
 interface Repository {
   full_name: string;
@@ -22,6 +26,9 @@ const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
   const [inputError, setInputError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { colors, title } = useContext(ThemeContext);
+
+  const { toggleTheme } = useTheme();
 
   const [repositories, setRepositories] = useState<Repository[]>(() => {
     const storagedRepositories = localStorage.getItem(
@@ -65,7 +72,18 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <img src={logo} alt="Github Explorer" />
+      <Header>
+        <img src={logo} alt="Github Explorer" />
+        <Toggle
+          checked={title === 'dark'}
+          onChange={toggleTheme}
+          className="toggle"
+          icons={{
+            checked: <FaMoon color="yellow" size={12} />,
+            unchecked: <FaSun color="yellow" size={12} />,
+          }}
+        />
+      </Header>
       <Title>Explore repositórios no Github</Title>
 
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
