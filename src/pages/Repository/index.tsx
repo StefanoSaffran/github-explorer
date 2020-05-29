@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useIntl } from 'react-intl';
 
 import api from '../../services/api';
 
@@ -40,6 +41,8 @@ const Repository: React.FC = () => {
   const [issues, setIssues] = useState<Issue[]>([]);
   const { params } = useRouteMatch<RepositoryParams>();
 
+  const intl = useIntl();
+
   useEffect(() => {
     async function loadData(): Promise<void> {
       const response = await Promise.all([
@@ -54,13 +57,15 @@ const Repository: React.FC = () => {
     loadData();
   }, [params.repository]);
 
+  const { messages } = intl;
+
   return (
     <>
       <Header>
         <img src={logo} alt="Github Explorer" />
         <Link to="/">
           <FiChevronLeft size={16} />
-          Voltar
+          {messages.back}
         </Link>
       </Header>
 
@@ -87,7 +92,7 @@ const Repository: React.FC = () => {
             </li>
             <li>
               <strong>{repository.open_issues_count}</strong>
-              <span>Issues abertas</span>
+              <span>{messages.issues_open}</span>
             </li>
           </ul>
         </RepositoryInfo>

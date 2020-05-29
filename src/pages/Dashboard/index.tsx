@@ -4,9 +4,11 @@ import { FiChevronRight } from 'react-icons/fi';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import Toggle from 'react-toggle';
 import { ThemeContext } from 'styled-components';
+import { useIntl } from 'react-intl';
 
 import api from '../../services/api';
 import Loading from '../../components/Loading';
+import LanguageToggle from '../../components/LanguageToggle';
 import { useTheme } from '../../hooks/theme';
 
 import logo from '../../assets/logo.svg';
@@ -26,10 +28,11 @@ const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
   const [inputError, setInputError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { colors, title } = useContext(ThemeContext);
+  const { title } = useContext(ThemeContext);
 
   const { toggleTheme } = useTheme();
-
+  const intl = useIntl();
+  const { messages } = intl;
   const [repositories, setRepositories] = useState<Repository[]>(() => {
     const storagedRepositories = localStorage.getItem(
       '@GithubExplorer:repositories'
@@ -52,7 +55,7 @@ const Dashboard: React.FC = () => {
     event.preventDefault();
 
     if (newRepo === '') {
-      setInputError('Digite o autor/nome do repositório');
+      setInputError(String(messages.empty_search));
       return;
     }
 
@@ -64,16 +67,18 @@ const Dashboard: React.FC = () => {
       setNewRepo('');
       setInputError('');
     } catch (error) {
-      setInputError('Erro na busca por esse repositório');
+      setInputError(String(messages.repository_not_found));
     } finally {
       setLoading(false);
     }
   }
 
+  console.log(messages);
   return (
     <>
       <Header>
         <img src={logo} alt="Github Explorer" />
+        <LanguageToggle />
         <Toggle
           checked={title === 'dark'}
           onChange={toggleTheme}
@@ -84,16 +89,16 @@ const Dashboard: React.FC = () => {
           }}
         />
       </Header>
-      <Title>Explore repositórios no Github</Title>
+      <Title>{messages.title}</Title>
 
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
           value={newRepo}
           onChange={({ target }) => setNewRepo(target.value)}
           type="text"
-          placeholder="Digite o nome do repositório"
+          placeholder={String(messages.placeholder)}
         />
-        <button type="submit">Pesquisar</button>
+        <button type="submit">{messages.button}</button>
       </Form>
 
       {inputError && <Error>{inputError}</Error>}
